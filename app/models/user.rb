@@ -3,6 +3,10 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  before_create -> {self.token = generate_token}
+
+
+
   private
 
   def generate_token
