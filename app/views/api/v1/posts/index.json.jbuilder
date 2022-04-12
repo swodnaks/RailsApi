@@ -1,9 +1,5 @@
-json.array! @posts do |p|
-  json.id p.id
-  json.title p.title
-  json.body p.body
-  json.user do
-    json.id p.user.id
-    json.name p.user.name
-  end
+json.array! @posts do |post|
+  json.id post.id
+  json.title post.title
+  json.body post.body
 end

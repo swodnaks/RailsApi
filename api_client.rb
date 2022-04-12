@@ -11,7 +11,7 @@ end
 response = client.post do |r|
   r.url '/api/v1/posts'
   r.headers['Content-Type'] = 'application/json'
-  r.body = '{ "post": {"title": "Title", "body": "Text"} }'
+  r.body = '{ "post": {"title": "Hello", "body": "Hey"} }'
 end
 
 puts Oj.load(response.body)

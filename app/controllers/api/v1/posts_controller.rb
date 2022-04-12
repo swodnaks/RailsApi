@@ -2,6 +2,7 @@ module Api
   module V1
     class PostsController < ApplicationController
       include ActionController::HttpAuthentication::Token::ControllerMethods
+      before_action :authenticate, only: [:create, :destroy]
 
       def index
         @posts = Post.all
@@ -13,6 +14,8 @@ module Api
         @post = @user.posts.new(post_params)
         if @post.save
           render json: @post, status: :created
+        else
+          render json: @post.errors, status: :unprocessable_entity
         end
       end
 

@@ -1,24 +1,30 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. В этом API приложении стандартные модели user, post, с ассоциациями, валидациями и контроллеры к ним
 
-Things you may want to cover:
+2. Данные у моделей в seeds.rb созданы с помощью гема faker
 
-* Ruby version
+3. Все данные в контроллерах должны отвечать в формате JSON с помощью гемов jbuilder
 
-* System dependencies
+или active_model_serializers
 
-* Configuration
+4. Если использовать jbuilder, то надо создать во views представление в формате .json.jbuilder
+Если использовать сериалайзеры, то нужно их создать и указать какие поля будут возвращены в формате JSON.
 
-* Database creation
+5. У юзеров есть уникальный токен, который появляется при его создании(регистрации) before_create -> {self.token = generate_token} и проверяется с помощью приватного метода в контроллере
 
-* Database initialization
+6. С помощью api_client.rb и гема Faraday можно делать HTTP запросы и проверить как
+все работает(регистрация юзеров, удаление и создание постов)
 
-* How to run the test suite
+Например этот скрипт создает пост с помощью токена определенного юзера:
 
-* Services (job queues, cache servers, search engines, etc.)
+client = Faraday.new(url: 'http://localhost:3000') do |config|
+  config.adapter  Faraday.default_adapter
+  config.token_auth('d8f824cbc7e02f7536def762e4c02ef0')
+end
 
-* Deployment instructions
-
-* ...
+response = client.post do |r|
+  r.url '/api/v1/posts'
+  r.headers['Content-Type'] = 'application/json'
+  r.body = '{ "post": {"title": "Hello!", "body": "How are you?"} }'
+end
